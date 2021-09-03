@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -34,6 +35,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
@@ -43,11 +47,13 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         endpoints
           .authenticationManager(authenticationManager)
           .tokenStore(tokenStore())
-          .tokenEnhancer(tokenEnhancerChain);
+          .tokenEnhancer(tokenEnhancerChain)
+          .userDetailsService(userDetailsService);
 //		endpoints													// before enhancer was implemented
 //				.authenticationManager(authenticationManager)
 //				.tokenStore(tokenStore())
-//				.accessTokenConverter(jwtAccessTokenConverter());
+//				.accessTokenConverter(jwtAccessTokenConverter())
+//        		.userDetailsService(userDetailsService);
 	}
 
 	@Bean

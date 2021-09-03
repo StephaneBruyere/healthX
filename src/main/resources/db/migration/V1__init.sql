@@ -1,0 +1,13 @@
+CREATE TABLE User (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  password VARCHAR(75) NOT NULL
+);
+
+CREATE TABLE Authority (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL
+);
+
+-- INSERT INTO Authority  VALUES (1,'read');
+-- INSERT INTO Authority  VALUES (2,'write');
