@@ -12,20 +12,20 @@ import com.healthX.model.Authority;
 public class AuthorityService {
 	
 	@Autowired
-	AuthorityRepository AuthorityRepository;
+	AuthorityRepository authorityRepository;
 	
 	public void addAuthority(Authority auth) {
-		Optional<Authority> a = AuthorityRepository.findAuthorityByName(auth.getName());
+		Optional<Authority> a = authorityRepository.findAuthorityByName(auth.getName());
 
 		if (a.isEmpty()) {
-			AuthorityRepository.save(auth);
+			authorityRepository.save(auth);
 		} else {
 			throw new RuntimeException("Authority already exists!");
 		}
 	}
 	
 	public Authority getAuthorityByName(String name) {
-		return AuthorityRepository.findAuthorityByName(name).orElseThrow();
+		return authorityRepository.findAuthorityByName(name).orElseThrow();
 	}
 
 }

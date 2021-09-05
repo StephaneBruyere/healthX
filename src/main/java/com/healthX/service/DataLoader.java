@@ -10,6 +10,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import com.healthX.model.Authority;
+import com.healthX.model.Client;
+import com.healthX.model.GrantType;
 import com.healthX.model.User;
 
 @Component
@@ -21,8 +23,37 @@ public class DataLoader implements ApplicationRunner {
 	private UserService userService;
 	@Autowired
 	private AuthorityService authorityService;
+	@Autowired
+	private ClientService clientService;
+	@Autowired
+	private GrantTypeService grantTypeService;
 
 	public void run(ApplicationArguments args) {
+		GrantType grantType1 = new GrantType();
+		grantType1.setName("authorization_code");
+		GrantType grantType2 = new GrantType();
+		grantType2.setName("password");
+		GrantType grantType3 = new GrantType();
+		grantType3.setName("refresh_token");
+		try {
+			grantTypeService.addGrantType(grantType1);
+			grantTypeService.addGrantType(grantType2);
+			grantTypeService.addGrantType(grantType3);
+		} catch (Exception e) {
+			LOGGER.debug("GrantType table already initialized");
+		}
+		
+		Client client1 = new Client();
+		client1.setName("client1");
+		client1.setSecret("secret1");
+		client1.setRedirectURI("http://localhost:8080");
+		client1.setScope("read");
+		client1.setGrantTypes(List.of(grantType1, grantType2, grantType3));
+		try {
+			clientService.addClient(client1);
+		} catch (Exception e) {
+			LOGGER.debug("Client table already initialized");
+		}
 
 		Authority auth1 = new Authority();
 		auth1.setName("read");
