@@ -29,7 +29,7 @@ public class Client {
 	private String secret;
 	private String scope;
 	
-	@Column(name = "rediect_uri")
+	@Column(name = "redirect_uri")
 	private String redirectURI;
 	
 	@NotNull

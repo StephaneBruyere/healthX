@@ -20,6 +20,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+import com.healthX.security.service.ClientDetailsServiceImpl;
+
 @Configuration
 @EnableAuthorizationServer
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -38,6 +40,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private ClientDetailsServiceImpl clientDetailsService;
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
@@ -71,14 +76,15 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.inMemory()
-				.withClient("client")
-				.secret("secret")
-				.authorizedGrantTypes("authorization_code","password", "refresh_token")
-				.scopes("read")
-					.and()
-				.withClient("resourceserver")		// Adds the client credentials used by the resource server
-				.secret("resourceserversecret");	// to call the endpoint, which exposes the public key			
+		clients.withClientDetails(clientDetailsService);
+//		clients.inMemory()
+//				.withClient("client")
+//				.secret("secret")
+//				.authorizedGrantTypes("authorization_code","password", "refresh_token")
+//				.scopes("read")
+//					.and()
+//				.withClient("resourceserver")		// Adds the client credentials used by the resource server
+//				.secret("resourceserversecret");	// to call the endpoint, which exposes the public key			
 	}
 	
 	@Override
